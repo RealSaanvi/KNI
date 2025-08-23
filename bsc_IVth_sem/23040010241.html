@@ -1,5 +1,34 @@
 
 <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Secured Document</title>
+    <style>
+        body { font-family: sans-serif; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; margin: 0; background-color: #f4f4f4; }
+        #verification-form { background: white; padding: 20px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); text-align: center; }
+        #verification-form input { padding: 10px; margin: 10px 0; border: 1px solid #ccc; border-radius: 4px; display: block; width: 100%; box-sizing: border-box; }
+        #verification-form button { background-color: #007bff; color: white; padding: 12px 20px; border: none; border-radius: 4px; cursor: pointer; font-size: 16px; }
+        #verification-form button:hover { background-color: #0056b3; }
+        #message-box { margin-top: 15px; color: red; font-weight: bold; }
+        #hidden-content { display: none; margin-top: 20px; text-align: left; }
+    </style>
+</head>
+<body>
+
+    <div id="verification-form">
+        <h2>Enter Your Date of Birth</h2>
+        <p>Please enter your DOB to view the content. (e.g., 17-07-2006)</p>
+        <input type="text" id="dobInput" placeholder="DD-MM-YYYY">
+        <button onclick="verifyDOB()">Submit</button>
+        <div id="message-box"></div>
+    </div>
+
+    <div id="hidden-content">
+        <!-- Original HTML content goes here -->
+        
+<!DOCTYPE html>
 
 <html lang="en">
 <head>
@@ -479,4 +508,48 @@
 </div>
 <div>
 </div></body>
+</html>
+
+    </div>
+
+    <script>
+        const ROLL_NO = "23040010241";
+        const jsonPath = "./dob_verifier.json";
+        const dobInput = document.getElementById("dobInput");
+        const verificationForm = document.getElementById("verification-form");
+        const hiddenContent = document.getElementById("hidden-content");
+        const messageBox = document.getElementById("message-box");
+        
+        async function verifyDOB() {
+            const userDOB = dobInput.value.trim();
+            if (!userDOB) {
+                messageBox.textContent = "Please enter your DOB.";
+                return;
+            }
+
+            try {
+                const response = await fetch(jsonPath);
+                if (!response.ok) {
+                    throw new Error(`Failed to fetch JSON: ${response.status}`);
+                }
+                const dobData = await response.json();
+
+                const expectedDOB = dobData[ROLL_NO];
+                if (expectedDOB && expectedDOB === userDOB) {
+                    // Success! Show the content.
+                    verificationForm.style.display = 'none';
+                    hiddenContent.style.display = 'block';
+                    messageBox.textContent = "Access Granted!";
+                    messageBox.style.color = 'green';
+                } else {
+                    messageBox.textContent = "Incorrect DOB. Access Denied.";
+                    messageBox.style.color = 'red';
+                }
+            } catch (error) {
+                messageBox.textContent = "Error during verification. Please try again later.";
+                console.error("Verification error:", error);
+            }
+        }
+    </script>
+</body>
 </html>
