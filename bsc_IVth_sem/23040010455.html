@@ -1,34 +1,5 @@
 
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Secured Document</title>
-    <style>
-        body { font-family: sans-serif; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; margin: 0; background-color: #f4f4f4; }
-        #verification-form { background: white; padding: 20px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); text-align: center; }
-        #verification-form input { padding: 10px; margin: 10px 0; border: 1px solid #ccc; border-radius: 4px; display: block; width: 100%; box-sizing: border-box; }
-        #verification-form button { background-color: #007bff; color: white; padding: 12px 20px; border: none; border-radius: 4px; cursor: pointer; font-size: 16px; }
-        #verification-form button:hover { background-color: #0056b3; }
-        #message-box { margin-top: 15px; color: red; font-weight: bold; }
-        #hidden-content { display: none; margin-top: 20px; text-align: left; }
-    </style>
-</head>
-<body>
-
-    <div id="verification-form">
-        <h2>Enter Your Date of Birth</h2>
-        <p>Please enter your DOB to view the content. (e.g., 17-07-2006)</p>
-        <input type="text" id="dobInput" placeholder="DD-MM-YYYY">
-        <button onclick="verifyDOB()">Submit</button>
-        <div id="message-box"></div>
-    </div>
-
-    <div id="hidden-content">
-        <!-- Original HTML content goes here -->
-        
-<!DOCTYPE html>
 
 <html lang="en">
 <head>
@@ -536,19 +507,40 @@
 </div></div>
 </div>
 <div>
-</div></body>
-</html>
-
+</div>
+    <div id="verification-form" style="position:fixed; top:0; left:0; width:100%; height:100%; background-color:#f4f4f4; z-index:1000; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center;">
+        <div style="background:white; padding:20px; border-radius:8px; box-shadow:0 4px 6px rgba(0,0,0,0.1);">
+            <h2>Enter Your Date of Birth</h2>
+            <p>Please enter your DOB to view the content. (e.g., 17-07-2006)</p>
+            <input type="text" id="dobInput" placeholder="DD-MM-YYYY" style="padding:10px; margin:10px 0; border:1px solid #ccc; border-radius:4px; display:block; width:100%; box-sizing:border-box;">
+            <button onclick="verifyDOB()" style="background-color:#007bff; color:white; padding:12px 20px; border:none; border-radius:4px; cursor:pointer; font-size:16px;">Submit</button>
+            <div id="message-box" style="margin-top:15px; color:red; font-weight:bold;"></div>
+        </div>
     </div>
-
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
     <script>
+        
+const firebaseConfig = {
+  apiKey: "AIzaSyDpCtxG4MXrj06LPXieVvaisEz-ZgLj2AM",
+  authDomain: "kni-students.firebaseapp.com",
+  projectId: "kni-students",
+  storageBucket: "kni-students.firebasestorage.app",
+  messagingSenderId: "575793911394",
+  appId: "1:575793911394:web:1da66a838eb62676fae33b"
+};
+
         const ROLL_NO = "23040010455";
-        const jsonPath = "./dob_verifier.json";
+        const COLLECTION_NAME = "results"; // The name of your Firestore collection
         const dobInput = document.getElementById("dobInput");
         const verificationForm = document.getElementById("verification-form");
         const hiddenContent = document.getElementById("hidden-content");
         const messageBox = document.getElementById("message-box");
         
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+
         async function verifyDOB() {
             const userDOB = dobInput.value.trim();
             if (!userDOB) {
@@ -557,21 +549,21 @@
             }
 
             try {
-                const response = await fetch(jsonPath);
-                if (!response.ok) {
-                    throw new Error(`Failed to fetch JSON: ${response.status}`);
-                }
-                const dobData = await response.json();
+                // Get the document from Firestore using the Roll No
+                const docRef = db.collection(COLLECTION_NAME).doc(ROLL_NO);
+                const docSnap = await docRef.get();
 
-                const expectedDOB = dobData[ROLL_NO];
-                if (expectedDOB && expectedDOB === userDOB) {
-                    // Success! Show the content.
-                    verificationForm.style.display = 'none';
-                    hiddenContent.style.display = 'block';
-                    messageBox.textContent = "Access Granted!";
-                    messageBox.style.color = 'green';
+                if (docSnap.exists) {
+                    const data = docSnap.data();
+                    if (data.dob === userDOB) {
+                        // Success! Hide the form and show the original content.
+                        verificationForm.style.display = 'none';
+                    } else {
+                        messageBox.textContent = "Incorrect DOB. Access Denied.";
+                        messageBox.style.color = 'red';
+                    }
                 } else {
-                    messageBox.textContent = "Incorrect DOB. Access Denied.";
+                    messageBox.textContent = "Incorrect Roll No or DOB. Access Denied.";
                     messageBox.style.color = 'red';
                 }
             } catch (error) {
@@ -580,5 +572,6 @@
             }
         }
     </script>
+</body>
 </body>
 </html>
