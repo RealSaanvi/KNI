@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KNIPSS Exams</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" xintegrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f0f4f8; 
+            display: flex;
+            flex-direction: column;
+            min-height: 10vh;
+        }
+        .container {
+            max-width: 1200px;
+            margin: auto;
+            padding: 1rem;
+            flex-grow: 1;
+        }
+        .header {
+            background: linear-gradient(135deg, #536b83, #7ba4cd, #6a94be, #384959); /* Custom gradient */
+            color: white;
+            padding: 1rem;
+            border-radius: 0 0 1.5rem 1.5rem;
+            box-shadow: 0 10px 25px rgba(43, 43, 43, 0.3);
+        }
+        .header-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+        }
+        @media (min-width: 768px) {
+            .header-content {
+                flex-direction: row;
+                justify-content: space-between;
+                text-align: left;
+            }
+        }
+        .university-info {
+            flex: 1;
+            padding: 0 1rem;
+            text-align: center;
+        }
+        .logo {
+            width: 80px;
+            height: auto;
+            margin: 0.5rem;
+        }
+        .marquee-container {
+            width: 100%;
+            background-color: rgba(0, 0, 0, 0.2);
+            padding: 0.5rem;
+            margin-top: 0.5rem;
+            border-radius: 0.5rem;
+            overflow: hidden;
+        }
+        .marquee-text {
+            white-space: nowrap;
+            animation: marquee 20s linear infinite;
+        }
+        @keyframes marquee {
+            0% { transform: translateX(100%); }
+            100% { transform: translateX(-100%); }
+        }
+        .announcements-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+        @media (min-width: 1024px) {
+            .announcements-grid {
+                grid-template-columns: 2fr 1fr;
+            }
+        }
+        .announcement-item {
+            display: flex;
+            align-items: center;
+            background: white;
+            padding: 1rem;
+            border-radius: 0.75rem;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+            border: 1px solid #e2e8f0;
+        }
+        .announcement-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
+        }
+        .announcement-date {
+            background-color: #e0f2fe;
+            color: #004d99;
+            padding: 0.5rem;
+            border-radius: 0.5rem;
+            font-weight: bold;
+            text-align: center;
+            flex-shrink: 0;
+            width: 60px;
+        }
+        .announcement-content {
+            flex-grow: 1;
+            margin-left: 1rem;
+        }
+        .student-corner-button {
+            background: #fff;
+            padding: 1.5rem;
+            border-radius: 1rem;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            text-align: center;
+            text-decoration: none;
+            color: #333;
+            border: 1px solid #e2e8f0;
+        }
+        .student-corner-button:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
+        }
+        .student-corner-button i {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+        .footer {
+            background: linear-gradient(135deg, #384959, #6A89A7);
+            color: white;
+            padding: 2rem 1rem;
+            margin-top: 2rem;
+            border-radius: 1.5rem 1.5rem 0 0;
+            box-shadow: 0 -5px 15px rgba(0, 51, 102, 0.2);
+        }
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1.5rem;
+        }
+        @media (min-width: 768px) {
+            .footer-grid {
+                grid-template-columns: repeat(4, 1fr);
+            }
+        }
+        .announcements-box {
+            max-height: 400px;
+            overflow-y: scroll;
+            -webkit-overflow-scrolling: touch;
+        }
+        .scroll-button-container {
+            text-align: center;
+            margin-bottom: 1rem;
+            display: block;
+        }
+        @media (min-width: 768px) {
+            .scroll-button-container {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="header-content">
+            <img class="logo" src="https://knipssexams.in/images/logo.png" alt="KNIPSS Logo">
+            <div class="university-info">
+                <h1 class="text-xl md:text-3xl font-extrabold font-serif">Kamla Nehru Institute of Physical and Social Sciences</h1>
+                <p class="text-sm md:text-xl font-semibold mt-1">Sultanpur U.P. India</p>
+                <p class="text-xs md:text-base font-medium mt-1">An Autonomous Institute And Accredited "A" Grade by NAAC</p>
+                <p class="text-xs md:text-sm mt-1">Affiliated to Dr. Ram Manohar Lohia Avadh University, Ayodhya (U.P.)</p>
+            </div>
+            <img class="logo" src="https://knipssexams.in/images/right-logo.png" alt="NAAC Logo">
+        </div>
+        <div class="marquee-container">
+            <p class="marquee-text">
+                कमला नेहरू इन्स्टीट्यूट की स्थापना का मकसद महज़ एक तालीमी इदारा क़ायम करना नहीं है, बल्कि इस पूरे इलाके की ग़ुरबत की लड़ाई इसी इदारे से उसी दोहरे निश्चय के साथ लड़़ना है, जिस अज़़्म के साथ इस इलाके के बाशिन्दों ने सन् 1857 की जंगे आज़ादी लड़ी थी। ”.....आर्थिक आज़ादी के लिए जंग का मरकज़ कमला नेहरू इन्स्टीट्यूट है।“
+            </p>
+        </div>
+    </header>
+    <main class="container">
+        <div class="scroll-button-container">
+            <a href="#student-corner" class="inline-block bg-blue-500 hover:bg-blue-600 text-white font-bold py-3 px-6 rounded-full transition-colors duration-300" target="_blank">
+                Go to Student Corner
+            </a>
+        </div>
+        <div class="announcements-grid">
+            <div class="bg-white p-6 rounded-xl shadow-lg">
+                <h2 class="text-2xl font-bold text-center text-blue-800 mb-4 pb-2 border-b-2 border-blue-500">
+                    <i class="fas fa-bullhorn mr-2"></i>Announcement / Examination
+                </h2>
+                <div id="announcements-list" class="space-y-4 announcements-box">
+                    <div class="announcement-item">
+                        <div class="announcement-date">18<br>Aug<br>2025</div>
+                        <div class="announcement-content">
+                            <p class="font-semibold text-gray-800">संस्थान के स्वायत्तशासी व्यवस्था के अधीन प्री-पी०एच०डी० मुख्य परीक्षा 2024-25 का परिणाम घोषित।</p>
+                            <a href="https://knipssexams.in/software/upload/New%20Doc%2008-18-2025%2013.16.pdf" class="text-blue-600 hover:underline text-sm font-medium mt-1 inline-block" target="_blank">
+                                <i class="fas fa-download mr-1"></i>Download
+                            </a>
+                        </div>
+                    </div>
+                    <div class="announcement-item">
+                        <div class="announcement-date">14<br>Aug<br>2025</div>
+                        <div class="announcement-content">
+                            <p class="font-semibold text-gray-800">संस्थान के स्वायत्तशासी व्यवस्था के अधीन पी०एच०डी० प्रवेश परीक्षा कार्यक्रम 2025-26 के सम्बन्ध में अधिसूचना</p>
+                            <a href="https://knipssexams.in/software/upload/New%20Doc%2008-13-2025%2017.01.pdf" class="text-blue-600 hover:underline text-sm font-medium mt-1 inline-block" target="_blank">
+                                <i class="fas fa-download mr-1"></i>Download
+                            </a>
+                        </div>
+                    </div>
+                    <div class="announcement-item">
+                        <div class="announcement-date">13<br>Aug<br>2025</div>
+                        <div class="announcement-content">
+                            <p class="font-semibold text-gray-800">संस्थान के स्वायत्तशासी व्यवस्था के अधीन स्नातक / परास्नातक द्वितीय एवं चतुर्थ सेमेस्टर की अपनी उत्तरपुस्तिकाओं के निरीक्षण एवं पुनर्मूल्यांकन हेतु अधिसूचना</p>
+                            <a href="https://knipssexams.in/software/upload/Document%2020.pdf" class="text-blue-600 hover:underline text-sm font-medium mt-1 inline-block" target="_blank">
+                                <i class="fas fa-download mr-1"></i>Download
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="student-corner" class="bg-white p-6 rounded-xl shadow-lg">
+                <h2 class="text-2xl font-bold text-center text-green-800 mb-4 pb-2 border-b-2 border-green-500">
+                    <i class="fas fa-user-graduate mr-2"></i>Student Corner
+                </h2>
+                <div class="grid grid-cols-2 lg:grid-cols-3 gap-4">
+                    <a href="https://knipssexams.in/uin_reg_form_25.php" class="student-corner-button" target="_blank"><i class="fas fa-id-badge text-pink-500"></i><p class="font-semibold">UIN</p></a>
+                    <a href="https://knipssexams.in/exam_examination_form.php" class="student-corner-button" target="_blank"><i class="fas fa-file-alt text-cyan-500"></i><p class="font-semibold">Exam Form</p></a>
+                    <a href="https://knipssexams.in/entrance_exam.php" class="student-corner-button" target="_blank"><i class="fas fa-door-open text-teal-500"></i><p class="font-semibold">Entrance Exam</p></a>
+                    <a href="#" class="student-corner-button" target="_blank"><i class="fas fa-laptop-code text-purple-500"></i><p class="font-semibold">Online Admission</p></a>
+                    <a href="https://knipssexams.in/answer_sheet_reevaluation.php" class="student-corner-button" target="_blank"><i class="fas fa-file-signature text-rose-500"></i><p class="font-semibold">Re-Evaluation</p></a>
+                    <a href="https://knipssexams.in/elearning_reg_form.php" class="student-corner-button" target="_blank"><i class="fas fa-chalkboard-teacher text-emerald-500"></i><p class="font-semibold">E-Learning</p></a>
+                    <a href="https://knipssexams.in/phd_admit_card_search.php" class="student-corner-button" target="_blank"><i class="fas fa-ticket-alt text-sky-500"></i><p class="font-semibold">Ph.D. Entrance Admit Card</p></a>
+                    <a href="https://knipssexams.in/exam_result_session.php" class="student-corner-button" target="_blank"><i class="fas fa-poll text-orange-500"></i><p class="font-semibold">Result</p></a>
+                </div>
+            </div>
+        </div>
+    </main>
+    <footer class="footer mt-6 bg-gray-900 text-white rounded-t-2xl shadow-lg">
+        <div class="text-center py-3 bg-gradient-to-r from-green-400 via-yellow-400 to-red-400 rounded-t-2xl">
+            <h3 class="text-xl font-bold">हेल्प डेस्क :</h3>
+        </div>
+        <div class="footer-grid grid grid-cols-1 md:grid-cols-2 gap-4 p-6">
+            <div class="p-4 rounded-lg bg-gray-800 hover:bg-gray-700 transition">
+                <p class="font-semibold text-green-400">समय</p>
+                <p class="text-sm">प्रात: 10 से सायं 6 बजे तक</p>
+            </div>
+            <div class="p-4 rounded-lg bg-gray-800 hover:bg-gray-700 transition">
+                <p class="font-semibold text-green-400">मोबाईल</p>
+                <p class="text-sm">
+                    <a href="tel:+919554969773" class="hover:underline" target="_blank">+91 9554969773</a> & 
+                    <a href="tel:+917052984802" class="hover:underline" target="_blank">7052984802</a>
+                </p>
+            </div>
+            <div class="p-4 rounded-lg bg-gray-800 hover:bg-gray-700 transition">
+                <p class="font-semibold text-green-400">ई-मेल</p>
+                <p class="text-sm">
+                    <a href="mailto:knipssexams@gmail.com" class="hover:underline" target="_blank">knipssexams@gmail.com</a>
+                </p>
+            </div>
+            <div class="p-4 rounded-lg bg-gray-800 hover:bg-gray-700 transition">
+                <p class="font-semibold text-green-400">पता</p>
+                <p class="text-sm">
+                    कमला नेहरू भौतिक एवं सामाजिक विज्ञान संस्थान, सुल्तानपुर, उत्तर प्रदेश, 228118
+                </p>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>
